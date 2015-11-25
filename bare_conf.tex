@@ -130,7 +130,9 @@ the channels divided into $4 \times 4$ blocks and pixels in each block are summe
 \subsection{Fast Feature Pyramids}
 One of the most challenging problems in object detection is: Different instances of one object could be appear in different sizes and pose. Therefor, it is very hard to have a classifier to detect all objects in an image. To tackle this problem detectors used sliding window method in a pyramid of images in multiple scales. In traditional methods we had to extract features in every scales that would be we called feature pyramids. it will will solve the different sizes problem by increasing the computational costs in number features and scales (up to multiple seconds for each frame).
 
-For increasing the speed of the detector for building these feature pyramids, \cite{dollar2014fast} propose a very simple and fast method for approximating features in different scales. For clarifying the subject, let $I_{k}(x,y)=I(x/k,y/k)$ is the up-sampled version of original image and suppose our feature is the gradient of the image: 
+For increasing the speed of the detector for building these feature pyramids, \cite{dollar2014fast} propose a very simple and fast method for approximating features in different scales. For clarifying the subject, let $I_{k}(x,y)=I(x/k,y/k)$ is the up-sampled version of original image and suppose our feature is the gradient of the image: $ h_k = \frac{\partial I_k}{\partial x}(x,y)=\frac{1}{k}\frac{\partial I}{\partial x}(x/k,y/k), h = \frac{\partial I_k}{\partial y}(x,y)=\frac{1}{k}\frac{\partial I}{\partial y}(x/k,y/k)$. With a simple calculus we can deduce that $h_k=k\times h_k$.
+
+Authors of \cite{dollar2014fast} did some experiments to show these results. 
 
 \section{Tracking: Kalman Filter}
 
