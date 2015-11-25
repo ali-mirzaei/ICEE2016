@@ -1,0 +1,232 @@
+
+\documentclass[conference]{IEEEtran}
+
+
+
+ 
+
+
+
+\hyphenation{op-tical net-works semi-conduc-tor}
+\usepackage{amsmath}
+
+
+\begin{document}
+%
+% paper title
+% can use linebreaks \\ within to get better formatting as desired
+\title{Near Real-Time Vehicle Detection and Tracking in Highways}
+
+
+% author names and affiliations
+% use a multiple column layout for up to three different
+% affiliations
+\author{\IEEEauthorblockN{Ebrahim Soroush}
+\IEEEauthorblockA{Amirkabir University of Technology\\ Email: e.soroush@hotmail.com}
+\and
+\IEEEauthorblockN{Ali Mirzaei}
+\IEEEauthorblockA{Amirkabir University of Technology\\
+Email: a.mirzaei69@gmail.com}
+\and
+\IEEEauthorblockN{Shiva Kamkar}
+\IEEEauthorblockA{Amirkabir University of Technology\\
+Email: shv.kamkar@gmail.com}}
+
+\bibliographystyle{IEEEtran}
+
+% make the title area
+\maketitle
+
+
+\begin{abstract}
+%\boldmath
+In this paper we present an approach for detection and tracking of vehicles in highways. The Aggregated Channel Features (ACF) are used to detect vehicles and the Kalman filter is employed to track the detected objects. The proposed scheme enjoys high accuracy in both detection and tracking. Moreover, it can be run at near real-time speed on an ordinary computer (both detection and tracking take about 140ms for each frame). The proposed approach was the best algorithm in AUTCUP2015 competitions and it got the second rank in that competition (The first rank was not given to any team).
+\end{abstract}
+% IEEEtran.cls defaults to using nonbold math in the Abstract.
+% This preserves the distinction between vectors and scalars. However,
+% if the conference you are submitting to favors bold math in the abstract,
+% then you can use LaTeX's standard command \boldmath at the very start
+% of the abstract to achieve this. Many IEEE journals/conferences frown on
+% math in the abstract anyway.
+
+% no keywords
+
+
+
+
+% For peer review papers, you can put extra information on the cover
+% page as needed:
+% \ifCLASSOPTIONpeerreview
+% \begin{center} \bfseries EDICS Category: 3-BBND \end{center}
+% \fi
+%
+% For peerreview papers, this IEEEtran command inserts a page break and
+% creates the second title. It will be ignored for other modes.
+\IEEEpeerreviewmaketitle
+
+
+
+\section{Introduction}
+
+With daily increasing of number of vehicles and highway traffics, the Intelligent Traffic Systems (ITS) become more and more important than before. Obtaining the traffic parameters such as number of vehicles, average speed for any type of vehicles (light and heavy) and etc. can help the responsible organizations with better monitoring of the traffic. The vision-based systems are better than other existing methods (like laser guns for obtaining the speed or magnetic loops for counting and classification of vehicles) from several point of view: first, the cost of these kind of systems are far less than others. Secondly, the maintenance of cameras are much easier and thirdly all traffic parameters can be obtain with a single camera in a specific area. 
+
+
+In this paper we propose a scheme to detect and track vehicles in a video. Our proposed scheme works on a single camera which mounted on a high place and it is recording video from rear of vehicles. Moreover, it can be used in other views of camera if the detection model is trained based on that given view. The Aggregated Channel Features (ACF) is used for detection and a Kalman filter is employed to track the vehicles. The proposed approach can detect and track the vehicles in a near real-time speed (about 5 frame per second) on an ordinary computer\footnote{Intel i5-4460, 8GB RAM}. The presented approach was the best method in AUTCUP2015 competitions in Amirkabir University of Technology and it ranked second in that competitions (no team ranked first).
+
+
+
+The rest of this paper is organized as follow: Section II illustrates the existing algorithms. In section III the used detection algorithms (ACF) is described. In section IV the configuration of out kalman filter as a tracker is explained and section V concludes the paper. 
+\section{Related Works}
+Detection and tracking of vehicles can be considered as a core of a vision-based intelligent system. In the following subsections the most well-known methods for both detection and tracking are reviewed and the reasons of selected methods are presented.
+\subsection{Detection}
+All detection algorithms can be classified into two categories: motion-based and appearance-based approaches. Motion-based methods \cite{sen2004robust},\cite{sirikuntamat2015vehicle},\cite{lu2014moving} try to detect vehicles using their motions. However, these methods are fast and easy (they do not need to be trained), they are so vulnerable to shadows, luminance changes and shaking of the camera. In the other hand appearance-based approaches detect vehicles with a pre-trained model according to the intrinsic features of objects. Generally these kind of methods are more  computationally demanding than motion-based approaches but they do not have the mentioned disadvantages of these methods.
+
+As mentioned the appearance-based detections are more robust against luminance changed, camera shaking and shadows (problems that are common on highways). Because of these reasons we chose this family of methods for detection task. 
+
+One of the most well-known methods in object detection are part-based models such Deformable Part Model (DPM) \cite{felzenszwalb2008discriminatively}. Although DPM has a convincing performance for vehicle detection, it suffers from a high computations in test phase. The time consumption of DPM in test phase prevent us to have a real-time or even near real-time system for detection and tracking of vehicles. There are some methods which try to get fast DPM \cite{} but all these algorithms reduce the performance or they are not real-time.
+
+Recently the Convolutional Neural Networks (CNNs) presented very good results in object detection. These kind of methods are state-of-the-art algorithm in object detection.
+
+\begin{table}[here]
+	\label{detections}
+	\caption{Comparison of Detection Algorithms on Kitti Dataset}
+	\centering
+\begin{tabular}{c c c c c}	
+	
+
+	Criteria/Method & DPM & VGG & CNN-based & ACF \\
+	\hline
+	 Accuracy& & & & \\
+	   Time & & & &
+
+\end{tabular}	
+\end{table}
+\subsection{Tracking}
+Generally there are two approaches to track objects. First, tracking by detection, in which objects are detected in each frame and they are linked up in consecutive frames. Secondly, tracking by matching, that they tracked a predefined object in the next frames.
+
+
+
+
+
+
+
+\section{Car Detection}
+In this section we provide a brief overview of ACF detection framework \cite{dollar2010fastest} and then demonstrate a very fast method for feature pyramids generation \cite{dollar2014fast} in detection task.
+\subsection{Aggregated Channel Features (ACF)}
+In the first step we compute several channels of given image $I$ with $C=\Omega({I})$, one simple example of $C$ is the gray-level channel. In the second step we define some blocks of pixels in the image and then sum every block of pixels in $C$ and smooth the resulting lower resolution channel feature. Next step would be the concatenating of all pixels in the aggregated channels. In the last step we used a boosted trees of classifier to distinguish objects from background. Fig \ref{} is demonstrated this steps. 
+
+Main feature of ACF detector could be summarized as:
+
+\textbf{Channels:} In this work we used the 10 channels of features as \cite{dollar2010fastest} which is: LUV color channels (3 channels), normalized gradient magnitude(1 channel) and histogram of oriented gradients(6 channels). After smoothing these channels with a 
+$  \dfrac{\begin{bmatrix}
+	1&2&1
+	\end{bmatrix}}{4} $ filter, 
+the channels divided into $4 \times 4$ blocks and pixels in each block are summed up. Finally the channels are smoothed again with the same filter.
+
+\textbf{Classifier:} For car detection, we used AdaBoost \cite{friedman2000additive} to train and combine 128 depth-two trees as weak classifiers. This classifier needs positive and negative samples of cars and non-car patches for training.
+
+\textbf{Sliding Window Detection:} As traditional object detector, we used a sliding window detector for finding bounding box of car candidates. We extracted features in multiple scale of these bounding boxes and feed it to the boosted classifier. Our method for extracting these features in multiple scales is very important in run-time efficiency of the detector which is described in the next section.
+
+\subsection{Fast Feature Pyramids}
+One of the most challenging problems in object detection is: Different instances of one object could be appear in different sizes and pose. Therefor, it is very hard to have a classifier to detect all objects in an image. To tackle this problem detectors used sliding window method in a pyramid of images in multiple scales. In traditional methods we had to extract features in every scales that would be we called feature pyramids. it will will solve the different sizes problem by increasing the computational costs in number features and scales (up to multiple seconds for each frame).
+
+For increasing the speed of the detector for building these feature pyramids, \cite{dollar2014fast} propose a very simple and fast method for approximating features in different scales. For clarifying the subject, let $I_{k}(x,y)=I(x/k,y/k)$ is the up-sampled version of original image and suppose our feature is the gradient of the image: 
+
+\section{Tracking: Kalman Filter}
+
+We consider position ($x,y$) and size of bounding box ($w,h$) and their velocity as the state of kalman filter (constant velocity). So the state of the kalman filter will have 8 variable ($x,y,w,h,v_x,v_y,v_w,v_h$).
+With this definition the dynamic model will be:
+
+\[
+\begin{bmatrix}
+x \\
+y \\
+w \\
+h \\
+v_x \\
+v_y \\
+v_w \\
+v_h
+\end{bmatrix}^{t+1}
+=
+\begin{bmatrix}
+1 &0 & 0 & 0  & 1 & 0 &0 &0 \\
+0 &1 & 0 & 0  & 0 & 1 &0 &0 \\
+0 &0 & 1 & 0  & 0 & 0 &1 &0 \\
+0 &0 & 0 & 1  & 0 & 0 &0 &1 \\
+0 &0 & 0 & 0  & 1 & 0 &0 &0 \\
+0 &0 & 0 & 0  & 0 & 1 &0 &0 \\
+0 &0 & 0 & 0  & 0 & 0 &1 &0 \\
+0 &0 & 0 & 0  & 0 & 0 &0 &1 \\
+\end{bmatrix}
+\begin{bmatrix}
+x \\
+y \\
+w \\
+h \\
+v_x \\
+v_y \\
+v_w \\
+v_h
+\end{bmatrix}^t+n_d
+\],
+
+where $n_d$ is a vector and called model noise. The measurement model can be written as following:
+
+\[
+\begin{bmatrix}
+x \\
+y \\
+w \\
+h \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 &0 & 0 & 0  & 0 & 0 &0 &0 \\
+0 &1 & 0 & 0  & 0 & 0 &0 &0 \\
+0 &0 & 1 & 0  & 0 & 0 &0 &0 \\
+0 &0 & 0 & 1  & 0 & 0 &0 &0 \\
+
+\end{bmatrix}
+\begin{bmatrix}
+x \\
+y \\
+w \\
+h \\
+v_x \\
+v_y \\
+v_w \\
+v_h
+\end{bmatrix}+n_m
+\],
+
+where $n_m$ is a vector and is called the measurement noise. 
+
+
+\section{Implementation and Performance Evaluation}
+
+
+\section{Conclusion}
+The conclusion goes here.
+
+
+
+
+% conference papers do not normally have an appendix
+
+
+% use section* for acknowledgement
+\section*{Acknowledgment}
+
+
+The authors would like to thank Mr. Agahi, member of technical committee of AUTCUP2015, for his help on evaluating of our method.
+
+
+
+
+\section{References}
+\bibliography{ref}
+
+\end{document}
+
+
