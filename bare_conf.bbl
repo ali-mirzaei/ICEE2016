@@ -62,4 +62,8 @@ J.~Friedman, T.~Hastie, R.~Tibshirani \emph{et~al.}, ``Additive logistic
   by the authors),'' \emph{The annals of statistics}, vol.~28, no.~2, pp.
   337--407, 2000.
 
+\bibitem{PMT}
+P.~Doll\'ar, ``{P}iotr's {C}omputer {V}ision {M}atlab {T}oolbox ({PMT}),''
+  \url{http://vision.ucsd.edu/~pdollar/toolbox/doc/index.html}.
+
 \end{thebibliography}

@@ -110,29 +110,26 @@ Generally there are two approaches to track objects. First, tracking by detectio
 
 
 
-\section{Car Detection}
+\section{Detection: Aggregated Channels Features}
 In this section we provide a brief overview of ACF detection framework \cite{dollar2010fastest} and then demonstrate a very fast method for feature pyramids generation \cite{dollar2014fast} in detection task.
 \subsection{Aggregated Channel Features (ACF)}
-In the first step we compute several channels of given image $I$ with $C=\Omega({I})$, one simple example of $C$ is the gray-level channel. In the second step we define some blocks of pixels in the image and then sum every block of pixels in $C$ and smooth the resulting lower resolution channel feature. Next step would be the concatenating of all pixels in the aggregated channels. In the last step we used a boosted trees of classifier to distinguish objects from background. Fig \ref{} is demonstrated this steps. 
+First step includes computing several channels of given image $I$ with $C=\Omega({I})$; one simple example of $C$ could be the gray-level channel. In the second step, some blocks of pixels in the image is defined and then summed every block of pixels in $C$ and smooth the resulting lower resolution channel feature. Next step would be the concatenating of all pixels in the aggregated channels. In the last step, a boosted trees of classifier is used to distinguish objects from background. Fig \ref{} is demonstrated this steps. 
 
 Main feature of ACF detector could be summarized as:
 
-\textbf{Channels:} In this work we used the 10 channels of features as \cite{dollar2010fastest} which is: LUV color channels (3 channels), normalized gradient magnitude(1 channel) and histogram of oriented gradients(6 channels). After smoothing these channels with a 
-$  \dfrac{\begin{bmatrix}
-	1&2&1
-	\end{bmatrix}}{4} $ filter, 
+\textbf{Channels:} In this work same as \cite{dollar2010fastest} 10 channels of: LUV color channels (3 channels), normalized gradient magnitude(1 channel) and histogram of oriented gradients(6 channels) is used. After smoothing these channels with a 
+$[1\ 2\ 1]/4$ filter, 
 the channels divided into $4 \times 4$ blocks and pixels in each block are summed up. Finally the channels are smoothed again with the same filter.
 
-\textbf{Classifier:} For car detection, we used AdaBoost \cite{friedman2000additive} to train and combine 128 depth-two trees as weak classifiers. This classifier needs positive and negative samples of cars and non-car patches for training.
+\textbf{Classifier:} For classifying of cars and non-car detections, an AdaBoost \cite{friedman2000additive} is used to train and combine 128 depth-two trees as weak classifiers. This classifier needs positive and negative samples of cars and non-car patches for training.
 
-\textbf{Sliding Window Detection:} As traditional object detector, we used a sliding window detector for finding bounding box of car candidates. We extracted features in multiple scale of these bounding boxes and feed it to the boosted classifier. Our method for extracting these features in multiple scales is very important in run-time efficiency of the detector which is described in the next section.
+\textbf{Sliding Window Detection:} As traditional object detector, sliding window detector scheme employed for finding bounding boxes of car candidates. Features in multiple scales of these bounding boxes extracted and fed it to the boosted classifier. Extracting these features in multiple scales is very important in run-time efficiency and usually it is a bottleneck in detection. In the next section this subject will be discovered in detail.
 
 \subsection{Fast Feature Pyramids}
-One of the most challenging problems in object detection is: Different instances of one object could be appear in different sizes and pose. Therefor, it is very hard to have a classifier to detect all objects in an image. To tackle this problem detectors used sliding window method in a pyramid of images in multiple scales. In traditional methods we had to extract features in every scales that would be we called feature pyramids. it will will solve the different sizes problem by increasing the computational costs in number features and scales (up to multiple seconds for each frame).
+One of the most challenging problems in object detection is: Different instances of one object could be appear in different sizes and pose. Therefor, it is very hard to have a classifier to detect all objects in an image. To tackle this problem detectors used sliding window method in a pyramid of images in multiple scales. In traditional methods we had to extract features in every scales that we called feature pyramids, it will will solve the different sizes problem by increasing the computational costs in number features and scales (up to multiple seconds for each frame).
 
-For increasing the speed of the detector for building these feature pyramids, \cite{dollar2014fast} propose a very simple and fast method for approximating features in different scales. For clarifying the subject, let $I_{k}(x,y)=I(x/k,y/k)$ is the up-sampled version of original image and suppose our feature is the gradient of the image: $ h_k = \frac{\partial I_k}{\partial x}(x,y)=\frac{1}{k}\frac{\partial I}{\partial x}(x/k,y/k), h = \frac{\partial I_k}{\partial y}(x,y)=\frac{1}{k}\frac{\partial I}{\partial y}(x/k,y/k)$. With a simple calculus we can deduce that $h_k=k\times h_k$.
-
-Authors of \cite{dollar2014fast} did some experiments to show these results. 
+For increasing the speed of the detector in building these feature pyramids, \cite{dollar2014fast} propose a very simple and fast method for approximating features in different scales. For clarifying the subject, let $I_{k}(x,y)=I(x/k,y/k)$ is the up-sampled version of original image and suppose our feature is the gradient of the image: $ h_k = \frac{\partial I_k}{\partial x}(x,y)=\frac{1}{k}\frac{\partial I}{\partial x}(x/k,y/k), h = \frac{\partial I_k}{\partial y}(x,y)=\frac{1}{k}\frac{\partial I}{\partial y}(x/k,y/k)$. With a simple calculus we can deduce that $h_k=k\times h$.
+Fig \ref{} showed an experiment with a dataset of natural images, upsampled using bilinear interpolation, this approximation shows $h_{2}\approx2\times h$ for gradient histogram features. This experiments showed for 4280 images this approximation is unbiased and relatively small variance ($0.061$). For downsampled images because of lost information from original image this derivations is not true. Experiments showed this information lost is consistent and resulting approximation is biased but with small variance ($0.059$), fig \ref{} showed this discussions. \cite{dollar2014fast} has more details about fast feature pyramids estimation.
 
 \section{Tracking: Kalman Filter}
 
@@ -206,7 +203,13 @@ where $n_m$ is a vector and is called the measurement noise.
 
 
 \section{Implementation and Performance Evaluation}
-
+In this section we demonstrate the performance of our method on AUTCUP dataset and explain some implementation details.\\
+\textbf{Training} \\
+We train ACF detector with open-source piotr-toolbox \cite{PMT}. As explained in \ref{} for training, we need positive and negative samples from train dataset. For convenience we used a pre-trained DPM model on PASCAL VOC2012 on the train videos for extracting car patches. For training we extract 1657 patches of cars and 19188 non-car patches all resized in $[64\ 64]$ of from train videos. Training phase including reading all images, extracting feature pyramids with aforementioned method and training boosted classifiers takes 17 seconds.
+\\
+\textbf{AUTCUP Dataset} \\
+This competition includes $12$ video of non-stable cameras with different views, fig \ref{} shows some sample of these videos. For training we captured 1000 random frames from each video and extracted car and non-car patches from these frames. Validation set of these competition was first 30 seconds of each videos and results showed in table \ref{}. For evaluating the method on this competition in the test set, all teams have to submit their code on an evaluation server, table \ref{} shows result of this competition. \\
+Our method for detecting and tracking of all cars in video works in near real-time, about 145 ms for each frame.
 
 \section{Conclusion}
 The conclusion goes here.
@@ -221,12 +224,10 @@ The conclusion goes here.
 \section*{Acknowledgment}
 
 
-The authors would like to thank Mr. Agahi, member of technical committee of AUTCUP2015, for his help on evaluating of our method.
+The authors would like to thank Mr. Agahi, member of technical committee of AUTCUP2015, for his help on evaluating of the method.
 
 
 
-
-\section{References}
 \bibliography{ref}
 
 \end{document}

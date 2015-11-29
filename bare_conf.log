@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.10.30)  25 NOV 2015 15:05
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.10.30)  29 NOV 2015 11:26
 entering extended mode
 **bare_conf.tex
 (C:\Users\Ebrahim\Documents\icee2016\IEEEtran5\bare_conf.tex
@@ -182,7 +182,31 @@ Underfull \hbox (badness 2538) in paragraph at lines 82--83
 
 LaTeX Warning: Reference `' on page 2 undefined on input line 116.
 
-(C:\Users\Ebrahim\Documents\icee2016\IEEEtran5\bare_conf.bbl [2])
+
+LaTeX Warning: Reference `' on page 2 undefined on input line 132.
+
+
+LaTeX Warning: Reference `' on page 2 undefined on input line 132.
+
+
+LaTeX Warning: Reference `' on page 2 undefined on input line 208.
+
+
+LaTeX Warning: Reference `' on page 2 undefined on input line 211.
+
+
+LaTeX Warning: Reference `' on page 2 undefined on input line 211.
+
+
+LaTeX Warning: Reference `' on page 2 undefined on input line 211.
+
+[2] (C:\Users\Ebrahim\Documents\icee2016\IEEEtran5\bare_conf.bbl
+Underfull \hbox (badness 7362) in paragraph at lines 66--68
+[]\OT1/ptm/m/n/8 P. Doll[]ar, ``Pi-otr's Com-puter Vi-sion Mat-lab Tool-box (PM
+T),''
+ []
+
+)
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -202,13 +226,13 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 1552 strings out of 493921
- 23497 string characters out of 3147275
+ 1553 strings out of 493921
+ 23502 string characters out of 3147275
  91025 words of memory out of 3000000
- 4883 multiletter control sequences out of 15000+200000
+ 4884 multiletter control sequences out of 15000+200000
  42364 words of font info for 79 fonts, out of 3000000 for 9000
  844 hyphenation exceptions out of 8191
- 27i,9n,20p,796b,232s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 27i,8n,20p,796b,207s stack positions out of 5000i,500n,10000p,200000b,50000s
 {F:/Program Files/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}<F:/Program File
 s/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><F:/Program Files/MiKTeX
  2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><F:/Program Files/MiKTeX 2.9/fon
@@ -220,7 +244,7 @@ b><F:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><F:/Program Fil
 es/MiKTeX 2.9/fonts/type1/urw/times/utmbi8a.pfb><F:/Program Files/MiKTeX 2.9/fo
 nts/type1/urw/times/utmr8a.pfb><F:/Program Files/MiKTeX 2.9/fonts/type1/urw/tim
 es/utmri8a.pfb>
-Output written on bare_conf.pdf (3 pages, 130206 bytes).
+Output written on bare_conf.pdf (3 pages, 133844 bytes).
 PDF statistics:
  57 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
