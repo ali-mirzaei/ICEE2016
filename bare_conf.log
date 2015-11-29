@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2014.12.19)  29 NOV 2015 23:42
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2014.12.19)  29 NOV 2015 23:51
 entering extended mode
 **bare_conf.tex
 (C:\Users\Ali\Dropbox\AVId\new\ICEE2016\bare_conf.tex
@@ -224,56 +224,58 @@ LaTeX Font Info:    ... okay on input line 15.
 \MPnumerator=\count109
 \makeMPintoPDFobject=\count110
 \everyMPtoPDFconversion=\toks24
-)
-Underfull \hbox (badness 2538) in paragraph at lines 82--83
+) <images/acfSteps.JPG, id=1, 893.58844pt x 139.27031pt>
+File: images/acfSteps.JPG Graphic file (type jpg)
+
+<use images/acfSteps.JPG>
+Package pdftex.def Info: images/acfSteps.JPG used on input line 88.
+(pdftex.def)             Requested size: 524.09975pt x 81.68423pt.
+
+Underfull \hbox (badness 2538) in paragraph at lines 93--94
 []\OT1/ptm/m/n/10 All de-tec-tion al-go-rithms can be clas-si-fied into two
  []
 
 [1{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}
 
 
-]
-
-LaTeX Warning: Reference `ACFSteps' on page 2 undefined on input line 106.
-
-
-Underfull \hbox (badness 1418) in paragraph at lines 146--148
+] [2 <C:/Users/Ali/Dropbox/AVId/new/ICEE2016/images/acfSteps.JPG>]
+Underfull \hbox (badness 1418) in paragraph at lines 164--166
 \OT1/ptm/m/n/10 ($\OML/cmm/m/it/10 w; h$\OT1/ptm/m/n/10 ) and their ve-loc-ity 
 as the state of Kalman fil-ter.
  []
 
-[2]
-Overfull \hbox (24.887pt too wide) in paragraph at lines 241--241
+
+Overfull \hbox (24.887pt too wide) in paragraph at lines 259--259
 [][][]\OT1/ptm/m/n/8 Available in Novem-ber 2015 at: http://ceit.aut.ac.ir/ nik
 abadi/AAIC[]traffic[]dataset/| 
  []
 
 
-Underfull \hbox (badness 2662) in paragraph at lines 241--242
+Underfull \hbox (badness 2662) in paragraph at lines 259--260
 []\OT1/ptm/m/n/10 In this sec-tion we demon-strate the per-for-mance of
  []
 
 
-Underfull \hbox (badness 5175) in paragraph at lines 241--242
+Underfull \hbox (badness 5175) in paragraph at lines 259--260
 \OT1/ptm/m/n/10 our method on AUTCUP dataset[] and ex-plain some
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 241--242
+Underfull \hbox (badness 10000) in paragraph at lines 259--260
 
  []
 
 
-LaTeX Warning: Citation `PMT' on page 3 undefined on input line 243.
+LaTeX Warning: Citation `PMT' on page 3 undefined on input line 261.
 
-<images/results.jpg, id=19, 2559.5625pt x 1912.14375pt>
+<images/results.jpg, id=21, 2559.5625pt x 1912.14375pt>
 File: images/results.jpg Graphic file (type jpg)
 
 <use images/results.jpg>
-Package pdftex.def Info: images/results.jpg used on input line 257.
+Package pdftex.def Info: images/results.jpg used on input line 275.
 (pdftex.def)             Requested size: 524.09975pt x 391.52518pt.
- (C:\Users\Ali\Dropbox\AVId\new\ICEE2016\bare_conf.bbl
-[3])
+ [3]
+(C:\Users\Ali\Dropbox\AVId\new\ICEE2016\bare_conf.bbl)
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -285,37 +287,37 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[4
-
- <C:/Users/Ali/Dropbox/AVId/new/ICEE2016/images/results.jpg>]
+[4 <C:/Users/Ali/Dropbox/AVId/new/ICEE2016/images/results.jpg>]
 (C:\Users\Ali\Dropbox\AVId\new\ICEE2016\bare_conf.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 2506 strings out of 494045
- 36560 string characters out of 3145974
- 109528 words of memory out of 3000000
- 5797 multiletter control sequences out of 15000+200000
+ 2512 strings out of 494045
+ 36671 string characters out of 3145974
+ 107536 words of memory out of 3000000
+ 5801 multiletter control sequences out of 15000+200000
  43471 words of font info for 80 fonts, out of 3000000 for 9000
  718 hyphenation exceptions out of 8191
- 27i,8n,20p,832b,234s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 27i,8n,24p,832b,222s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}<C:/Progra
 m Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program 
 Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Fi
 les (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi5.pfb><C:/Program Files
  (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Program Files (x
-86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files (x86)
-/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files (x86)/MiK
-TeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTe
-X 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts
-/type1/urw/times/utmbi8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw
-/times/utmr8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/utmr
-i8a.pfb>
-Output written on bare_conf.pdf (4 pages, 2784780 bytes).
+86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Program Files (x86)
+/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files (x86)/Mi
+KTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files (x86)/MiKTeX
+ 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files (x86)/MiKTeX 2.9
+/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.9/f
+onts/type1/urw/times/utmb8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/
+urw/times/utmbi8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/
+utmr8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb
+>
+Output written on bare_conf.pdf (4 pages, 2841820 bytes).
 PDF statistics:
- 61 PDF objects out of 1000 (max. 8388607)
+ 70 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 11 words of extra memory for PDF output out of 10000 (max. 10000000)
 

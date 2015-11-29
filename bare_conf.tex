@@ -39,6 +39,7 @@ Email: shv.kamkar@gmail.com}}
 \maketitle
 
 
+
 \begin{abstract}
 	%\boldmath
 	In this paper we present an approach for detection and tracking of vehicles in highways. The Aggregated Channel Features (ACF) are used to detect vehicles and the Kalman filter is employed to track the detected objects. The proposed scheme enjoys high accuracy in both detection and tracking. Moreover, it can be run at near real-time speed on an ordinary computer (both detection and tracking take about 140ms for each frame). The proposed approach was the best algorithm in AUTCUP2015 competitions and it got the second rank in that competition (the first rank was not given to any team).
@@ -79,6 +80,16 @@ The rest of this paper is organized as follows: Section II illustrates the exist
 \section{Related Works}
 Detection and tracking of vehicles can be considered as a core of a vision-based intelligent system. In the following subsections the most well-known methods for both detection and tracking are reviewed and the reasons of selected methods are presented.
 \subsection{Detection}
+
+
+
+\begin{figure*}
+	\centering
+	\includegraphics[width=\textwidth]{images/acfSteps.JPG}
+	\caption{Outline of Aggregated Channel Features framework. First step: Computing several channels of given image $I$ with $\Omega$. Second step: Sum every blocks of channel features and smooth the resulting aggregated channels. Third step: Concatenation of feature channels in a vector. Fourth step: Training a boosted classifier \cite{dollar2014fast}}
+	\label{ACFSteps}
+\end{figure*}
+
 All detection algorithms can be classified into two categories: motion-based and appearance-based approaches. Motion-based methods \cite{sen2004robust},\cite{sirikuntamat2015vehicle},\cite{lu2014moving} try to detect vehicles using their motions. However, these methods are fast and easy (they do not need to be trained), they are too vulnerable to shadows, luminance changes and shaking of the camera. In the other hand appearance-based approaches detect vehicles with a pre-trained model according to the intrinsic features of the objects. Generally these kind of methods are more  computationally demanding than motion-based approaches but they do not have the mentioned disadvantages of motion-based methods.
 
 As mentioned the appearance-based detections are more robust against luminance changes, camera shaking and shadows (problems that are common on highways). Because of these reasons we chose this family of methods for detection task. 
@@ -96,6 +107,13 @@ As we want to design a system to easily can be used in real applications, we cho
 The Kalman filter can model the movements of an object and predict the object location based on that model. The paper \cite{zhang2013method} used this method to track cars. Particle filter can be considered as an extension of Kalman filter which in addition of movement model it can use the appearance features of the tracked object. This method can be better than Kalman filter in the crowd situations  where objects are much likely occluded. The paper \cite{} used this method to track pedestrians. Tracking-Learning-Detection (TLD) \cite{kalal2012tracking}  
 
 As we have a reliable  detector which detects vehicles in each frame, we used tracking by detection algorithms. 
+
+
+
+
+
+
+
 
 
 \section{Detection}
