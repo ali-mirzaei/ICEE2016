@@ -40,10 +40,9 @@ Email: shv.kamkar@gmail.com}}
 
 
 \begin{abstract}
-%\boldmath
-In this paper we present an approach for detection and tracking of vehicles in highways. The Aggregated Channel Features (ACF) are used to detect vehicles and the Kalman filter is employed to track the detected objects. The proposed scheme enjoys high accuracy in both detection and tracking. Moreover, it can be run at near real-time speed on an ordinary computer (both detection and tracking take about 140ms for each frame). The proposed approach was the best algorithm in AUTCUP2015 competitions and it got the second rank in that competition (The first rank was not given to any team).
+	%\boldmath
+	In this paper we present an approach for detection and tracking of vehicles in highways. The Aggregated Channel Features (ACF) are used to detect vehicles and the Kalman filter is employed to track the detected objects. The proposed scheme enjoys high accuracy in both detection and tracking. Moreover, it can be run at near real-time speed on an ordinary computer (both detection and tracking take about 140ms for each frame). The proposed approach was the best algorithm in AUTCUP2015 competitions and it got the second rank in that competition (the first rank was not given to any team).
 \end{abstract}
-
 % IEEEtran.cls defaults to using nonbold math in the Abstract.
 % This preserves the distinction between vectors and scalars. However,
 % if the conference you are submitting to favors bold math in the abstract,
@@ -64,46 +63,39 @@ In this paper we present an approach for detection and tracking of vehicles in h
 %
 % For peerreview papers, this IEEEtran command inserts a page break and
 % creates the second title. It will be ignored for other modes.
-\begin{IEEEkeywords}
-	Detection, Tracking, ACF, Kalman Filter, Vehicle
-\end{IEEEkeywords}
+\IEEEpeerreviewmaketitle
+
+
 
 \section{Introduction}
 
-With daily increasing of number of vehicles and highway traffics, the Intelligent Traffic Systems (ITS) become more and more important than before. Obtaining the traffic parameters such as number of vehicles, average speed for any type of vehicles (light and heavy) and etc. can help the responsible organizations with better monitoring of the traffic. The vision-based systems are better than other existing methods (like laser guns for obtaining the speed or magnetic loops for counting and classification of vehicles) from several point of view: first, the cost of these kind of systems are far less than others. Secondly, the maintenance of cameras are much easier and thirdly all traffic parameters can be obtain with a single camera in a specific area. 
+With daily increasing of number of vehicles and highway traffic, the Intelligent Traffic Systems (ITS) become more important than before. Obtaining the traffic parameters such as number of vehicles and average speed for any type (light and heavy) can help the responsible organizations with better monitoring of the traffic. The vision-based systems are better than other existing systems (like laser guns for obtaining the speed or magnetic loops for counting and classification of vehicles) from several point of view: First, the cost of cameras are far less than the other technologies. Secondly, maintenance of the cameras are much easier and finally all traffic parameters can be obtain with a single camera in a specific metropolis area. 
 
 
-In this paper we propose a scheme to detect and track vehicles in a video. Our proposed scheme works on a single camera which mounted on a high place and it is recording video from rear of vehicles. Moreover, it can be used in other views of camera if the detection model is trained based on that given view. The Aggregated Channel Features (ACF) is used for detection and a Kalman filter is employed to track the vehicles. The proposed approach can detect and track the vehicles in a near real-time speed (about 5 frame per second) on an ordinary computer\footnote{Intel i5-4460, 8GB RAM}. The presented approach was the best method in AUTCUP2015 competitions in Amirkabir University of Technology and it ranked second in that competitions (no team ranked first).
+In this paper we propose a scheme to detect and track vehicles in a video. Our proposed scheme works on a single camera which mounted on a high place and it is recording video from rear of vehicles. The Aggregated Channel Features (ACF) is used for detection and a Kalman filter is employed to track the vehicles. The proposed approach can detect and track the vehicles in a near real-time speed (about 5 frame per second) on an ordinary computer\footnote{Intel i5-4460, 8GB RAM}. The presented approach was the best method in AUTCUP2015\footnote{http://autcup.aut.ac.ir} competitions in Amirkabir University of Technology and it ranked second in that competitions (no team announced as the first rank).
 
 
-
-The rest of this paper is organized as follow: Section II illustrates the existing algorithms. In section III the used detection algorithms (ACF) is described. In section IV the configuration of out kalman filter as a tracker is explained and section V concludes the paper. 
+The rest of this paper is organized as follows: Section II illustrates the existing algorithms for detection and tracking in the literature. In section III the used detection algorithm is described. In section IV the configuration of our kalman filter as a tracker is explained and section V concludes the paper. 
 \section{Related Works}
 Detection and tracking of vehicles can be considered as a core of a vision-based intelligent system. In the following subsections the most well-known methods for both detection and tracking are reviewed and the reasons of selected methods are presented.
 \subsection{Detection}
+All detection algorithms can be classified into two categories: motion-based and appearance-based approaches. Motion-based methods \cite{sen2004robust},\cite{sirikuntamat2015vehicle},\cite{lu2014moving} try to detect vehicles using their motions. However, these methods are fast and easy (they do not need to be trained), they are too vulnerable to shadows, luminance changes and shaking of the camera. In the other hand appearance-based approaches detect vehicles with a pre-trained model according to the intrinsic features of the objects. Generally these kind of methods are more  computationally demanding than motion-based approaches but they do not have the mentioned disadvantages of motion-based methods.
 
+As mentioned the appearance-based detections are more robust against luminance changes, camera shaking and shadows (problems that are common on highways). Because of these reasons we chose this family of methods for detection task. 
 
+One of the most well-known methods in the object detection are part-based models such as Deformable Part Model (DPM) \cite{felzenszwalb2008discriminatively}. Although DPM has a convincing performance for vehicle detection, it suffers from a high computations in test phase. The time consumption of DPM in test phase prevent us to have a real-time or even near real-time system for detection and tracking of vehicles. There are some methods which try to accelerate run time of DPM \cite{} but all these algorithms reduce the performance or they are not real-time.
+The And-Or-Graph (AOG) \cite{li2014integrating} models the cars as a graph. This method propose a method of learning reconfigurable hierarchical
+And-Or models to integrate context and occlusion for car detection. Although this method has a better accuracy than DPM, its running time is  almost the same as DPM. So it also can not be used for real-time applications. Recently the Convolutional Neural Networks (CNNs) outperform other existing methods in object detection tasks. For example Densebox method \cite{huang2015densebox} could be considered as the best representative of this family which outperformed all other existing methods in Kitti dataset challenge in car detection\footnote{http://www.cvlibs.net/datasets/kitti/eval\_object.php}. Usually CNN-based methods need to run on Graphical Processor Units (GPU) for fast applications. The cost of GPUs is much more than CPUs and they are not available on ordinary personal computers.
 
-\begin{figure*}
-	\centering
-	\includegraphics[width=\textwidth]{images/acfSteps.JPG}
-	\caption{Outline of Aggregated Channel Features framework. First step: Computing several channels of given image $I$ with $\Omega$. Second step: Sum every blocks of channel features and smooth the resulting aggregated channels. Third step: Concatenation of feature channels in a vector. Fourth step: Training a boosted classifier \cite{dollar2014fast}}
-	\label{ACFSteps}
-\end{figure*}
+In 2014 a fast object detection was presented in \cite{dollar2014fast}, which is called Aggregated Channel Features (ACF). This method accelerate the detection with predicting of features instead of calculating them. The accuracy of ACF is almost the same as DPM and AOG, while its run time is almost 30 times faster than these methods \cite{dollar2014fast}. 
 
-
-
-All detection algorithms can be classified into two categories: motion-based and appearance-based approaches. Motion-based methods \cite{sen2004robust},\cite{sirikuntamat2015vehicle},\cite{lu2014moving} try to detect vehicles using their motions. However, these methods are fast and easy (they do not need to be trained), they are so vulnerable to shadows, luminance changes and shaking of the camera. In the other hand appearance-based approaches detect vehicles with a pre-trained model according to the intrinsic features of objects. Generally these kind of methods are more  computationally demanding than motion-based approaches but they do not have the mentioned disadvantages of these methods.
-
-As mentioned the appearance-based detections are more robust against luminance changed, camera shaking and shadows (problems that are common on highways). Because of these reasons we chose this family of methods for detection task. 
-
-One of the most well-known methods in object detection are part-based models such Deformable Part Model (DPM) \cite{felzenszwalb2008discriminatively}. Although DPM has a convincing performance for vehicle detection, it suffers from a high computations in test phase. The time consumption of DPM in test phase prevent us to have a real-time or even near real-time system for detection and tracking of vehicles. There are some methods which try to get fast DPM \cite{} but all these algorithms reduce the performance or they are not real-time.
-
-Recently the Convolutional Neural Networks (CNNs) presented very good results in object detection. These kind of methods are state-of-the-art algorithm in object detection.
-
+As we want to design a system to easily can be used in real applications, we chose the ACF among all mentioned methods as the detection algorithm of our scheme.
 
 \subsection{Tracking}
-Generally there are two approaches to track objects. First, tracking by detection, in which objects are detected in each frame and they are linked up in consecutive frames. Secondly, tracking by matching, that they tracked a predefined object in the next frames.
+
+The Kalman filter can model the movements of an object and predict the object location based on that model. The paper \cite{zhang2013method} used this method to track cars. Particle filter can be considered as an extension of Kalman filter which in addition of movement model it can use the appearance features of the tracked object. This method can be better than Kalman filter in the crowd situations  where objects are much likely occluded. The paper \cite{} used this method to track pedestrians. Tracking-Learning-Detection (TLD) \cite{kalal2012tracking}  
+
+As we have a reliable  detector which detects vehicles in each frame, we used tracking by detection algorithms. 
 
 
 \section{Detection}
