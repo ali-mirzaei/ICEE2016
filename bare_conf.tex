@@ -2,8 +2,9 @@
 \documentclass[conference]{IEEEtran}
 
 
+\usepackage{graphicx}
+\usepackage{float}
 
- 
 
 
 
@@ -42,6 +43,7 @@ Email: shv.kamkar@gmail.com}}
 %\boldmath
 In this paper we present an approach for detection and tracking of vehicles in highways. The Aggregated Channel Features (ACF) are used to detect vehicles and the Kalman filter is employed to track the detected objects. The proposed scheme enjoys high accuracy in both detection and tracking. Moreover, it can be run at near real-time speed on an ordinary computer (both detection and tracking take about 140ms for each frame). The proposed approach was the best algorithm in AUTCUP2015 competitions and it got the second rank in that competition (The first rank was not given to any team).
 \end{abstract}
+
 % IEEEtran.cls defaults to using nonbold math in the Abstract.
 % This preserves the distinction between vectors and scalars. However,
 % if the conference you are submitting to favors bold math in the abstract,
@@ -62,9 +64,9 @@ In this paper we present an approach for detection and tracking of vehicles in h
 %
 % For peerreview papers, this IEEEtran command inserts a page break and
 % creates the second title. It will be ignored for other modes.
-\IEEEpeerreviewmaketitle
-
-
+\begin{IEEEkeywords}
+	Detection, Tracking, ACF, Kalman Filter, Vehicle
+\end{IEEEkeywords}
 
 \section{Introduction}
 
@@ -79,6 +81,18 @@ The rest of this paper is organized as follow: Section II illustrates the existi
 \section{Related Works}
 Detection and tracking of vehicles can be considered as a core of a vision-based intelligent system. In the following subsections the most well-known methods for both detection and tracking are reviewed and the reasons of selected methods are presented.
 \subsection{Detection}
+
+
+
+\begin{figure*}
+	\centering
+	\includegraphics[width=\textwidth]{images/acfSteps.JPG}
+	\caption{Outline of Aggregated Channel Features framework. First step: Computing several channels of given image $I$ with $\Omega$. Second step: Sum every blocks of channel features and smooth the resulting aggregated channels. Third step: Concatenation of feature channels in a vector. Fourth step: Training a boosted classifier \cite{dollar2014fast}}
+	\label{ACFSteps}
+\end{figure*}
+
+
+
 All detection algorithms can be classified into two categories: motion-based and appearance-based approaches. Motion-based methods \cite{sen2004robust},\cite{sirikuntamat2015vehicle},\cite{lu2014moving} try to detect vehicles using their motions. However, these methods are fast and easy (they do not need to be trained), they are so vulnerable to shadows, luminance changes and shaking of the camera. In the other hand appearance-based approaches detect vehicles with a pre-trained model according to the intrinsic features of objects. Generally these kind of methods are more  computationally demanding than motion-based approaches but they do not have the mentioned disadvantages of these methods.
 
 As mentioned the appearance-based detections are more robust against luminance changed, camera shaking and shadows (problems that are common on highways). Because of these reasons we chose this family of methods for detection task. 
@@ -87,54 +101,58 @@ One of the most well-known methods in object detection are part-based models suc
 
 Recently the Convolutional Neural Networks (CNNs) presented very good results in object detection. These kind of methods are state-of-the-art algorithm in object detection.
 
-\begin{table}[here]
-	\label{detections}
-	\caption{Comparison of Detection Algorithms on Kitti Dataset}
-	\centering
-\begin{tabular}{c c c c c}	
-	
 
-	Criteria/Method & DPM & VGG & CNN-based & ACF \\
-	\hline
-	 Accuracy& & & & \\
-	   Time & & & &
-
-\end{tabular}	
-\end{table}
 \subsection{Tracking}
 Generally there are two approaches to track objects. First, tracking by detection, in which objects are detected in each frame and they are linked up in consecutive frames. Secondly, tracking by matching, that they tracked a predefined object in the next frames.
 
 
+\section{Detection}
+This section provides a brief overview of ACF detection \cite{dollar2014fast} method. This method has a high accuracy for object detection tasks (especially solid objects) comparing with other competing algorithms \cite{dollar2010fastest}. Moreover, it enjoys a very high speed in both training and test stages. In the subsequent sections, feature types of this method are introduced and also it is explained how to extract these features in a fast way.
 
-
-
-
-
-\section{Detection: Aggregated Channels Features}
-In this section we provide a brief overview of ACF detection framework \cite{dollar2010fastest} and then demonstrate a very fast method for feature pyramids generation \cite{dollar2014fast} in detection task.
 \subsection{Aggregated Channel Features (ACF)}
-First step includes computing several channels of given image $I$ with $C=\Omega({I})$; one simple example of $C$ could be the gray-level channel. In the second step, some blocks of pixels in the image is defined and then summed every block of pixels in $C$ and smooth the resulting lower resolution channel feature. Next step would be the concatenating of all pixels in the aggregated channels. In the last step, a boosted trees of classifier is used to distinguish objects from background. Fig \ref{} is demonstrated this steps. 
+The ACF method could be summarized into four major steps.
+First step includes computing several channels for a given image $I$ with a transformation function $C=\Omega({I})$. In the second step, each channel features is partitioned to some blocks and summation in every block leads to a lower resolution channel. Finally the aggregated features will be obtained with applying a smoothing filter on the lower resolution channels. Next step is concatenating of all pixels in the aggregated channels in a vector. In the last step, a boosted trees of classifier is trained to distinguish objects from background. Fig \ref{ACFSteps} demonstrates these steps. 
 
-Main feature of ACF detector could be summarized as:
+The main features of ACF detector can be summarized as:
 
-\textbf{Channels:} In this work same as \cite{dollar2010fastest} 10 channels of: LUV color channels (3 channels), normalized gradient magnitude(1 channel) and histogram of oriented gradients(6 channels) is used. After smoothing these channels with a 
+\textbf{Channels:} 
+ 10 channels of features are extracted as: LUV color channels (3 channels), normalized gradient magnitude (1 channel) and histogram of oriented gradients (6 channels). After smoothing these channels with a 
 $[1\ 2\ 1]/4$ filter, 
 the channels divided into $4 \times 4$ blocks and pixels in each block are summed up. Finally the channels are smoothed again with the same filter.
 
-\textbf{Classifier:} For classifying of cars and non-car detections, an AdaBoost \cite{friedman2000additive} is used to train and combine 128 depth-two trees as weak classifiers. This classifier needs positive and negative samples of cars and non-car patches for training.
+\textbf{Classifier:} For classifying of cars and non-cars, an AdaBoost classifier \cite{friedman2000additive} is trained which uses 128 depth-two trees as weak classifiers.
 
-\textbf{Sliding Window Detection:} As traditional object detector, sliding window detector scheme employed for finding bounding boxes of car candidates. Features in multiple scales of these bounding boxes extracted and fed it to the boosted classifier. Extracting these features in multiple scales is very important in run-time efficiency and usually it is a bottleneck in detection. In the next section this subject will be discovered in detail.
+\textbf{Sliding Window Detection:} As traditional object detectors, sliding window scheme is employed to find the bounding boxes of car candidates. In this approach extracted features in multiple scales, called feature pyramid, fed into a boosted classifier. Calculating of this feature pyramid usually is a bottleneck of the running time of detection. In the next section this subject will be covered in detail.
 
 \subsection{Fast Feature Pyramids}
-One of the most challenging problems in object detection is: Different instances of one object could be appear in different sizes and pose. Therefor, it is very hard to have a classifier to detect all objects in an image. To tackle this problem detectors used sliding window method in a pyramid of images in multiple scales. In traditional methods we had to extract features in every scales that we called feature pyramids, it will will solve the different sizes problem by increasing the computational costs in number features and scales (up to multiple seconds for each frame).
+One of the most challenging problems in object detection is that different instances of one object could be appeared in different sizes. To tackle this problem, detectors use sliding window method in a pyramid of multiple scale images. In traditional methods it was needed to calculate features in every scales. Therefore, constructing the feature pyramid  resolves the multi-scale problem by increasing the computational cost.
 
-For increasing the speed of the detector in building these feature pyramids, \cite{dollar2014fast} propose a very simple and fast method for approximating features in different scales. For clarifying the subject, let $I_{k}(x,y)=I(x/k,y/k)$ is the up-sampled version of original image and suppose our feature is the gradient of the image: $ h_k = \frac{\partial I_k}{\partial x}(x,y)=\frac{1}{k}\frac{\partial I}{\partial x}(x/k,y/k), h = \frac{\partial I_k}{\partial y}(x,y)=\frac{1}{k}\frac{\partial I}{\partial y}(x/k,y/k)$. With a simple calculus we can deduce that $h_k=k\times h$.
-Fig \ref{} showed an experiment with a dataset of natural images, upsampled using bilinear interpolation, this approximation shows $h_{2}\approx2\times h$ for gradient histogram features. This experiments showed for 4280 images this approximation is unbiased and relatively small variance ($0.061$). For downsampled images because of lost information from original image this derivations is not true. Experiments showed this information lost is consistent and resulting approximation is biased but with small variance ($0.059$), fig \ref{} showed this discussions. \cite{dollar2014fast} has more details about fast feature pyramids estimation.
+ To accelerate feature pyramid extraction, the ACF detector approximates features in different scales instead of calculating them. For clarifying the subject, let $I_{k}(x,y)=I(x/k,y/k)$ is the up-sampled version of original image and desired features are gradient of the image. Following the simple derivative rules:
+  $$h_{k_x} = \frac{\partial I_k}{\partial x}(x,y)=\frac{1}{k}\frac{\partial I}{\partial x}(x/k,y/k)$$ $$h_{k_y} = \frac{\partial I_k}{\partial y}(x,y)=\frac{1}{k}\frac{\partial I}{\partial y}(x/k,y/k)$$ With a simple calculus we can deduce that $h_k=k\times h$.
+  
+Besides above formulas, experiments also show approximation $h_{k}\approx k\times h$ for gradient histogram features is true.  Because of information lost in down-sampled images, these formulas are no longer valid. But experiments show this information lost is consistent and could be approximated with $h_{1/k}\approx \mu h$, where $\mu$ is a constant value smaller than $1/k$.
+More details and result of experiments are presented in \cite{dollar2014fast}.
+\begin{table*}[t] \label{tableResult}
+	\caption{Comparison of our results with other teams in AUTCUP competition}
+	\centering
+	\begin{tabular}{c||ccccccccccc}
+		\hline
+		Team&Recall&Precision&FAR&MT&ML&FP&FN&IDs&FM&MOTA&MOTP\\
+		\hline
+		\textbf{AVId}&\textbf{51.27}&\textbf{81.49}&2.93&\textbf{97}&\textbf{133}&17961&\textbf{75144}&\textbf{91}&\textbf{380}&\textbf{39.57}&\textbf{73.54}\\
+		FanAsaa&43.45&64.59&6.01&95&157&36737&87210&667&1072&19.20&73.49\\
+		Basir&12.95&54.56&\textbf{2.72}&27&383&\textbf{16632}&134260&127&426&2.08&68.3\\
+		\hline
+	\end{tabular}
+	
+\end{table*}
+
 
 \section{Tracking: Kalman Filter}
-
-We consider position ($x,y$) and size of bounding box ($w,h$) and their velocity as the state of kalman filter (constant velocity). So the state of the kalman filter will have 8 variable ($x,y,w,h,v_x,v_y,v_w,v_h$).
-With this definition the dynamic model will be:
+We use the Kalman filter framework for tracking of a single object. In first subsection the model specification of this Kalman filter is explained and in the second part we introduce  an assignment algorithm  to extend the single object tracking to a multi-object one.
+\subsection{Kalman Model}
+We consider position ($x,y$) and size of bounding box ($w,h$) and their velocity as the state of Kalman filter. So the state of the kalman filter will have 8 variables ($x,y,w,h,v_x,v_y,v_w,v_h$).
+With this defining of these variables the dynamic model will be:
 
 \[
 \begin{bmatrix}
@@ -167,8 +185,8 @@ v_x \\
 v_y \\
 v_w \\
 v_h
-\end{bmatrix}^t+n_d
-\],
+\end{bmatrix}^t+n_d,
+\]
 
 where $n_d$ is a vector and called model noise. The measurement model can be written as following:
 
@@ -202,19 +220,52 @@ v_h
 where $n_m$ is a vector and is called the measurement noise. 
 
 
+\subsection{Assignment of Detections and Tracks}
+
+The following cost matrix is used to assign the detected objects to existing tracks:
+\begin{equation}\nonumber
+c(i,j)= \frac{Area(d_i\cap t_j)}{\sqrt{Area(d_i)*Area(t_j)}},
+\end{equation}
+
+where $d_i$ and $t_j$ are the bounding box of $i^{th}$ detection and $j^{th}$ track, respectively. The Hungarian algorithm \cite{} is used to assign the detections and tracks according to defined cost matrix. There are three types of assignments:
+\begin{itemize}
+\item \textbf{Assigned Pairs}\\
+In this case the Kalman filter of the assigned track would be corrected with its assigned detection.
+
+\item \textbf{Unassigned Detections}\\
+An unassigned detection is probably a new object which is appeared in the current frame. So a new track will be initiated. At first the created track is not a valid track. If the number of assignment gets greater than a threshold, the track will be valid. This validation procedure help the tracker to remove the noisy false alarms of detection.
+
+\item \textbf{Unassigned Tracks}\\	
+In this case the counter of unassigned tracks will be incremented. If this counter for a particular track gets greater than a predefined threshold, that track will be killed. 
+	
+\end{itemize}
+
+
+
+
+
+
 \section{Implementation and Performance Evaluation}
-In this section we demonstrate the performance of our method on AUTCUP dataset and explain some implementation details.\\
-\textbf{Training} \\
-We train ACF detector with open-source piotr-toolbox \cite{PMT}. As explained in \ref{} for training, we need positive and negative samples from train dataset. For convenience we used a pre-trained DPM model on PASCAL VOC2012 on the train videos for extracting car patches. For training we extract 1657 patches of cars and 19188 non-car patches all resized in $[64\ 64]$ of from train videos. Training phase including reading all images, extracting feature pyramids with aforementioned method and training boosted classifiers takes 17 seconds.
-\\
-\textbf{AUTCUP Dataset} \\
-This competition includes $12$ video of non-stable cameras with different views, fig \ref{} shows some sample of these videos. For training we captured 1000 random frames from each video and extracted car and non-car patches from these frames. Validation set of these competition was first 30 seconds of each videos and results showed in table \ref{}. For evaluating the method on this competition in the test set, all teams have to submit their code on an evaluation server, table \ref{} shows result of this competition. \\
-Our method for detecting and tracking of all cars in video works in near real-time, about 145 ms for each frame.
+In this section we demonstrate the performance of our method on AUTCUP dataset\footnote{Available in November 2015 at: http://ceit.aut.ac.ir/~nikabadi/AAIC\_traffic\_dataset/} and explain some implementation details.\\
+\subsection{Implementation}
+We train ACF detector with open-source piotr-toolbox \cite{PMT}.  For convenience we used a pre-trained DPM model on PASCAL VOC2012 on the train videos for extracting car patches. In training we extract 1657 patches of cars and 19188 non-car patches all resized in $[64\ 64]$ from training videos. Training phase including reading all images, extracting feature pyramids with aforementioned method and training boosted classifiers takes 17 seconds.
+AUTCUP dataset includes $12$ video of non-stable cameras from different views, Fig \ref{results} shows some samples of these videos. For training we randomly captured 1000  frames from each video and extracted car and non-car patches from these frames.
+
+\subsection{Results} 
+Table \ref{tableResult} shows result of first 3 teams of AUTCUP2015. As shown the proposed approach outperforms other participating teams in most metrics of this competitions. Particularly, our method gets MOTA of 39.57 which is almost twice better than the second team. More details of detection and tracking metrics can be found at \cite{}.
+Moreover, the proposed algorithm works in near real-time (5 frame per second) on a $960\times 540$ video on a ordinary PC.
+The output of tracking on all 12 videos are shown in Fig \ref{results}. 
+
 
 \section{Conclusion}
-The conclusion goes here.
+In this paper we presented a feasible paradigm for detection and tracking of vehicles in highways. This method enjoys high accuracy and near real-time speed property on an ordinary PC. In more details, the running time of our algorithm in test phase is about 145 ms for each frame and it got MOTA of 39.57 and MOTP of 73.54 in AUTCUP dataset. These obtained accuracies is the best results in AUTCUP2015.
 
-
+\begin{figure*}[t]
+	\centering
+	\includegraphics[width=\textwidth]{images/results.jpg}
+	\caption{Result of our method in 12 videos of AUTCUP dataset}
+	\label{results}
+\end{figure*}
 
 
 % conference papers do not normally have an appendix
@@ -224,7 +275,8 @@ The conclusion goes here.
 \section*{Acknowledgment}
 
 
-The authors would like to thank Mr. Agahi, member of technical committee of AUTCUP2015, for his help on evaluating of the method.
+The authors would like to thank Mr. Agahi, member of technical committee of AUTCUP2015, for his helps.
+
 
 
 
